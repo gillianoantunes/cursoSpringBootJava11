@@ -2,9 +2,20 @@ package com.gillianocampos.curso.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+//colocar @Entity para mapear o jpa na classe user para instruir o jpa como ele vai converter os objetos para o modelo relacional
+@Entity //importar o javax.persistence.Entity;
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	//fala pro jpa qual é a chave primaria colocar em cima do atributo
+	//como a chave é numerica para colocar autoincrementar usar o @ abaixo
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String email;

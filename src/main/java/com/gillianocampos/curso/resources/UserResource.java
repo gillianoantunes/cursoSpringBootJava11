@@ -9,8 +9,10 @@ import com.gillianocampos.curso.entities.User;
 //essa classe disponibiliza um recusro web referente a entidade User apenas
 //colocar esses controladores passando o caminho localhost:8080/users
 //users é o nome do caminho roda a aplicaçao depois vai no navegador
-@RestController //para falar que essa classe é um recurso web que é implementado pelo controlador rest
-@RequestMapping(value = "/users") //para dar um nome pro recurso rest que sera o caminho no http
+//para falar que essa classe é um recurso web que é implementado pelo controlador rest
+//para dar um nome pro recurso rest que sera o caminho no http
+@RestController
+@RequestMapping(value = "/users") 
 public class UserResource {
 	
 	//metodo para encontrar todos registros de usuarios
