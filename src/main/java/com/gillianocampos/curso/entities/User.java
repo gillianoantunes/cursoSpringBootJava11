@@ -1,13 +1,21 @@
 package com.gillianocampos.curso.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-//colocar @Entity para mapear o jpa na classe user para instruir o jpa como ele vai converter os objetos para o modelo relacional
-@Entity //importar o javax.persistence.Entity;
+
+//colocar em cima do id os anotations @ do jpa para dizer que essa classe vai ser uma tabela do banco de dados
+//para a o nome da classe User não der conflito com a palavra User do sql usar o anotation @Table e dar um nome no caso tb_user
+@Entity
+@Table(name = "tb_user")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -20,6 +28,15 @@ public class User implements Serializable {
 	private String email;
 	private String phone;
 	private String password;
+	
+	//asssociaçaõ um user tem varios pedidos o nome orders esta no diagrama
+	//usa lista para associação com vários e ja tem que instanciar as coleções new arraylist
+	//acrescentar o metodo get para essa coleção o set não precisa pq não vamos alterar a lista hora nenhuma
+	//clica em orders para criar
+	//Anotation @OneToMany para indicar ao jpa que no banco de dados e entre paraentes o nome do atributo do outro lado da associação no caso client
+	//OnetoMany está mapeado do outro lado por client
+	@OneToMany(mappedBy =  "client")
+	private List<Order>  orders = new ArrayList<>();
 	
 	public User() {
 		
@@ -74,6 +91,10 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
+	//metodo get da lista orders da associação um user tem varios pedidos
+	public List<Order> getOrders() {
+		return orders;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -98,6 +119,8 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
+
+	
 	
 	
 }
