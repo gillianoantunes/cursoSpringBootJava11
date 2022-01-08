@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 //colocar em cima do id os anotations @ do jpa para dizer que essa classe vai ser uma tabela do banco de dados
 //para a o nome da classe User não der conflito com a palavra User do sql usar o anotation @Table e dar um nome no caso tb_user
@@ -36,6 +38,12 @@ public class User implements Serializable {
 	//Anotation @OneToMany para indicar ao jpa que no banco de dados e entre paraentes o nome do atributo do outro lado da associação no caso client
 	//OnetoMany está mapeado do outro lado por client
 	@OneToMany(mappedBy =  "client")
+	//para não dar loop eterno, pois user chama lista pedido,lista pedido chama user, usar a anotation abaixo @JsonIgnore abaixo da lista de pedido do cliente
+	//colocar @JsonIgnore em pelo um lugar ou aqui ou la em pedido Order e resolve o problema no postman localhost:8080/users/1 que estava dando loop eterno
+	//quando rodar no postman o pedido ex: localhost:8080/orders/1 o jpa carrega tbm os dados do user associado quando vc tem uma associação muitos para um, se vc carregar o objeto do lado do muitos no caso pedido o objeto do lado do 1 vem automaticamente
+	//mas isso nao acontece se vc carregar um objeto do lado do 1 para muitos no caso User(lazy loading)
+	//se eu colocar o anotation @jsonIgnore la em order.java em cima do private User client; no lado do pedido ai sim ele carrega e traz todos os pedidos do usuario 1 localhost:8080/users/1
+	@JsonIgnore
 	private List<Order>  orders = new ArrayList<>();
 	
 	public User() {

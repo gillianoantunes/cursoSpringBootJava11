@@ -11,6 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
+
 //colocar em cima do id os anotations @ do jpa para dizer que essa classe vai ser uma tabela do banco de dados
 //para a o nome da classe Order não der conflito com a palavra order do sql usar o anotation @Table e dar um nome no caso tb_order
 @Entity
@@ -24,6 +28,10 @@ public class Order implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	// classe Instant é melhor que o Date para registrar momentos de datas
+	//para garantir que meu instant seja mostrado la no meu json no formato de string do iso 8601 acrescentar a anotation @JsonFormat para fomatar
+	//pattern é o formato e o timezone é padrao utc que é horario universal
+	//ir no postman e verificar em localhost:8080/orders/1 se a momento da data foi formatado
+	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
 	
 	//associações com user 1 pedido de um cliente e 1 user tem varios pedidos
