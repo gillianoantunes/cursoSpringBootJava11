@@ -33,6 +33,7 @@ public class User implements Serializable {
 	
 	//asssociaçaõ um user tem varios pedidos o nome orders esta no diagrama
 	//usa lista para associação com vários e ja tem que instanciar as coleções new arraylist
+	////instanciar para garantir que a coleção nãpo comece valendo nula ela tem que comecar vazia porem instanciada
 	//acrescentar o metodo get para essa coleção o set não precisa pq não vamos alterar a lista hora nenhuma
 	//clica em orders para criar
 	//Anotation @OneToMany para indicar ao jpa que no banco de dados e entre paraentes o nome do atributo do outro lado da associação no caso client

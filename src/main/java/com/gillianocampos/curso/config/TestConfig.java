@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.gillianocampos.curso.entities.Category;
 import com.gillianocampos.curso.entities.Order;
+import com.gillianocampos.curso.entities.Product;
 import com.gillianocampos.curso.entities.User;
 import com.gillianocampos.curso.entities.enums.OrderStatus;
 import com.gillianocampos.curso.repositories.CategoryRepository;
 import com.gillianocampos.curso.repositories.OrderRepository;
+import com.gillianocampos.curso.repositories.ProductRepository;
 import com.gillianocampos.curso.repositories.UserRepository;
 
 //para falar pro spring que esta classe é especifica de configuração @Configuration
@@ -34,9 +36,14 @@ public class TestConfig implements CommandLineRunner {
 	private OrderRepository orderRepository;
 
 	@Autowired
-	// injeçao de dependencia do categoryrepository vc deve fazer para todos
+	// injeçao de dependencia do categoryRepository vc deve fazer para todos
 	// repository
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	// injeçao de dependencia do ProductRepository vc deve fazer para todos
+	// repository
+	private ProductRepository productRepository;
 
 	
 	
@@ -65,7 +72,12 @@ public class TestConfig implements CommandLineRunner {
 		Category cat2 = new Category(null, "Books");
 		Category cat3 = new Category(null, "Computers");
 
-		
+		//instanciar Produtos
+		Product p1 = new Product(null, "The Lord of the Rings", "Lorem ipsum dolor sit amet, consectetur.", 90.5, ""); 
+		Product p2 = new Product(null, "Smart TV", "Nulla eu imperdiet purus. Maecenas ante.", 2190.0, ""); 
+		Product p3 = new Product(null, "Macbook Pro", "Nam eleifend maximus tortor, at mollis.", 1250.0, ""); 
+		Product p4 = new Product(null, "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, ""); 
+		Product p5 = new Product(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
 		
 		
 		// para salvar no banco estes objetos chama o userepository.saveAll(lista de
@@ -80,10 +92,14 @@ public class TestConfig implements CommandLineRunner {
 		// salvar o pedido passando as listas o1,o2,o3
 		orderRepository.saveAll(Arrays.asList(o1, o2, o3));
 				
-		// salvar o pedido passando as listas o1,o2,o3
+		// salvar a categoria passando as listas cat1,cat2,cat3
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
-
-		// agora roda e vai no localhost:8080/h2-console e atualiza pra ver a tabela se
+		
+		// salvar o produto passando as listas p1,p2,p3,p4,p5
+		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+	
+				
+				// agora roda e vai no localhost:8080/h2-console e atualiza pra ver a tabela se
 		// inseriu
 	}
 
