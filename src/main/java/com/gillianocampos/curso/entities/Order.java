@@ -12,8 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
+import com.gillianocampos.curso.entities.enums.OrderStatus;
 
 //colocar em cima do id os anotations @ do jpa para dizer que essa classe vai ser uma tabela do banco de dados
 //para a o nome da classe Order não der conflito com a palavra order do sql usar o anotation @Table e dar um nome no caso tb_order
@@ -34,6 +33,11 @@ public class Order implements Serializable{
 	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
 	
+	//atributo para usar enumerado do Enum OrderStatus e colocar no construtor
+	//coloquei como Integer e nao OrderStatus para eu dizer explitamente que eu estou gravando no banco de dados um número inteiro
+	// e na hora de mostrar eu mostro o OrderStatus
+	private Integer orderStatus;
+	
 	//associações com user 1 pedido de um cliente e 1 user tem varios pedidos
 	//client é o nome que esta no diagrama de entidades do tipo user
 	//implementar na classe user a associação 1 user tem varios pedidos e por metodo get para essa lista
@@ -48,10 +52,12 @@ public class Order implements Serializable{
 		
 	}
 
-	public Order(Long id, Instant moment, User client) {
+	public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
 		super();
 		this.id = id;
 		this.moment = moment;
+		//chama a operação setOrderStatus para atribuir um orderStatus para meu objeto Order
+		setOrderStatus(orderStatus);
 		this.client = client;
 	}
 
@@ -69,6 +75,20 @@ public class Order implements Serializable{
 
 	public void setMoment(Instant moment) {
 		this.moment = moment;
+	}
+
+	// meu atributo OrderStatus é integer tenho que converter integer para OrderStatus
+	//tenho um metodo que criei no Enum OrderStatus que faz essa conversão entao vou chamar ele chamado converteParaOrderStatus
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.converteParaOrderStatus(orderStatus);
+	}
+
+	//agora no set é o inverso..vou receber um OrderStatus e guardar um inteiro bata eu chamar a operação getCodigo la no enum OrderStatus
+	public void setOrderStatus(OrderStatus orderStatus) {
+		//se caso o programador passar um valor nulo para contruir o objeto
+		if(orderStatus != null) {
+			this.orderStatus = orderStatus.getCodigo();
+		}
 	}
 
 	public User getClient() {
