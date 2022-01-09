@@ -25,18 +25,18 @@ public class OrderResource {
 	@Autowired
 	private OrderService service;
 	
-	//metodo para encontrar todos registros de usuarios
+	//metodo para encontrar todos registros de pedidos
 	//getmapping para o metodo responde o rest do tipo get do http
 	//o metodo retorna uma lista de Order <List<Order>>
 	@GetMapping
 	public ResponseEntity<List<Order>> findAll(){
-		//fazer uma declaraçao+ de uma lista de usuarios recebendo e chamando o service.findalll e esse servico vai chamar o repository , o banco
+		//fazer uma declaraçao+ de uma lista de pedidos recebendo e chamando o service.findalll e esse servico vai chamar o repository , o banco
 		List<Order> lista = service.findAll();
 		//ResponseEntity.ok retorna a resposta do http e no corpo da resposta eu retorno a minha lista
 		return ResponseEntity.ok().body(lista);
 	}
 	
-	//implementar tbm um endpoint para buscar o usuario por id
+	//implementar tbm um endpoint ou metodo para buscar o pedido por id
 	//getmapping pq tbm vai ser uma requição do tipo get passando o id 
 	@GetMapping(value = "/{id}")
 	//ResponseEntity<Order> o metodo nao retorna lista agora é so um user por id

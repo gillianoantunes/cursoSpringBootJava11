@@ -2,13 +2,13 @@ package com.gillianocampos.curso.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.gillianocampos.curso.entities.Order;
+import com.gillianocampos.curso.entities.Category;
 
-//responsavel pelo repositoy da classe Order. Sao interfaces
-//ela herança com jpaRepository do tipo Order e o tipo do Id de Order é long
+//responsavel pelo repositoy da classe Category. Sao interfaces
+//ela herança com jpaRepository do tipo Category e o tipo do Id de Category é long
 //so assim ja tem uma implementação padrao e ja esta pronto
 
 //como essa interface repository pode ou nao colocar o Anotation @Repository pois ela ja herda do jpaRepository
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 }
