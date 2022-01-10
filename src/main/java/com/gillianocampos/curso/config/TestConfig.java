@@ -99,7 +99,23 @@ public class TestConfig implements CommandLineRunner {
 		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 	
 				
-				// agora roda e vai no localhost:8080/h2-console e atualiza pra ver a tabela se
+		
+		//para fazer associação entre as tabelas product e category exemplos
+		//p1.getCategories().add(cat2) acessa a categoria de p1 e adiciona o elemento da categoria2 fazendo assim a associação entre product e category
+		 p1.getCategories().add(cat2);
+		 //outros exemplos
+		 p2.getCategories().add(cat1);
+		 p2.getCategories().add(cat3);
+		 p3.getCategories().add(cat3);
+		 p4.getCategories().add(cat3);
+		 p5.getCategories().add(cat2);
+		//na hora de salvar fica tudo certinho no modelo relacional
+		
+		 //salvar as associações que fiz acima basta chamar de novo o repository
+		 productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
+		 
+		 
+		// agora roda e vai no localhost:8080/h2-console e atualiza pra ver a tabela se
 		// inseriu
 	}
 

@@ -8,8 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_category")
@@ -17,7 +22,7 @@ import javax.persistence.Transient;
 public class Category implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-
+	//1 produto varias categorias e 1 categoria varios produtos, vai ter que fazer o jointable
 	//passos para fazer tudo entre duas tabelas um para muitos, no caso category e product
 	//primeiro fazer os atributos
 //segundo associações depois que tiver as classes produtos
@@ -57,9 +62,32 @@ public class Category implements Serializable{
 	//28 fazer o ProductResource mudando os nomes e caminhos
 	//29 verificar no postman se inseriu os produtos no caminho localhost:8080/products
 	//commit
-	//ate que se faz relacionamento total de 2 tabelas 1 para muitos no caso category e product
 	
- 	//fala pro jpa qual é a chave primaria colocar em cima do atributo
+	//como é associação muitos pra muitos usar anotation @JoinTable para fazer uma tabela de associação
+	//escolha uma das duas classes para fazer ou product ou category
+	//escolhi produto retirar o @transient e fazer o mapeamento para transformar as coleções que tem nas duas classe na tabela de associação
+	//30 colocar em cima da coleção categories na classe product @ManyToMany
+	//colocar tbm o @JoinTable nele vai falar qual vai ser o nome da tabela e quais vao ser as chaves estrangeiras que vai associar a tabela de Product com Category
+	//colocar tbm joinCollums indica o nome da chave estrangeira referente a tabela de product la em product
+	//colocar tbm inverseJoinCollums que define a chave estrangeira da outra entidade no caso da entidade categoria
+	//ficara assim :	@ManyToMany
+	// @JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), 
+	// inverseJoinColumns = @JoinColumn(name = "category_id"))
+	//31 agora do outro lado na classe Category apagar o @Transient na coleção abaixo
+	//colocar com nome da coleção da outra classe no caso de product e a coleção chama categories dentro de mapped
+	//ficara assim: @ManyToMany(mappedBy = "categories")
+	//32 ir na classe TestConfig e  fazer associação depois de salvar no banco colocar as associaçoes
+	//ex :falar que o produto p1 é da categoria 2
+	//p1.getCategories().add(cat2) acessa a categoria de p1 e adiciona o elemento da categoria2 fazendo assim a associação entre product e category
+	//33 quando vai no postman e chama localhost:8080/categories da um loop eterno pois categoria chama produto e produto chama categoria
+	//para arrumar colocar o anotation @JsonIgnre na classe category em cima da coleção chamada products da associação
+ 	//acessar no postman  localhost:8080/categories  e agora sim acaba o loop eterno e mostra as categorias 
+	//se chamar no postman os produtos  localhost:8080/products tambem da certo mostra os produtos e junto as categorias de cada produto
+	
+	
+	
+	
+	//fala pro jpa qual é a chave primaria colocar em cima do atributo
 		//como a chave é numerica para colocar autoincrementar usar o @ abaixo
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,7 +101,10 @@ public class Category implements Serializable{
 		//nome products é o que esta representado no diagrama
 		//clica no erro que dara no nome products e crie o metodo get e set deste atributo que criei agora, mas se for um tipo de coleção eu so uso o get pq não faz sentido em alterar uma coleção de produtos
 		//eu nunca troco coleção eu posso adicionar e remover elementos da coleção, mas trocar não faz sentido
-		@Transient
+		//apaguei o @transient e adicionei abaixo para fazer tabela de associação
+		
+		@JsonIgnore // para nao da loop eterno
+		@ManyToMany(mappedBy = "categories")
 		private Set<Product> products = new HashSet<>();
 	//terceiro construtor vazio
 	public Category() {

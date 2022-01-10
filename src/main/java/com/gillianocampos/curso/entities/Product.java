@@ -8,8 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 //mapeamento1
 @Entity
@@ -31,15 +33,18 @@ public class Product implements Serializable{
 	private String imgUrl;
 	
 	//associação 1 produto tem varias categorias nao vou usar lista e sim set e instanciar
+	//e tbm 1 categoria tem varios produtos. muitos pra muitos fazer o jointable
 	//instanciar para garantir que a coleção nãpo comece valendo nula ela tem que comecar vazia porem instanciada
-	//set representa um conjunto para garantir que 1 produto não tenha mais de uma categoria
+	
 	//usei hashset pq o set não pode ser instanciar entao tenho qu usar uma classe correspondente a esta interface
 	//da mesma forma que usamos o list e instancia arrayList usamos o set e instanciando hashset
 	//depois de fazer esta associação fazer a instaciaação do outro lado na classe category
 	//set<category> pq dentro da produto eu tenho conjunto de categoria e la na classe categoria dentro do categoria eu tenho conjunto de produto
 	//nome categories é o que esta representando no diagrama
 	
-	@Transient
+	@ManyToMany
+	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), 
+	inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 	
 	//construtor vazio
