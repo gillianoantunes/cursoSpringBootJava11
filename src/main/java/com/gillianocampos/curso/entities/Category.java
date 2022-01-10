@@ -83,8 +83,9 @@ public class Category implements Serializable{
 	//para arrumar colocar o anotation @JsonIgnre na classe category em cima da coleção chamada products da associação
  	//acessar no postman  localhost:8080/categories  e agora sim acaba o loop eterno e mostra as categorias 
 	//se chamar no postman os produtos  localhost:8080/products tambem da certo mostra os produtos e junto as categorias de cada produto
-	
-	
+	//commit
+	//34 fazer a classe auxiliar OrderItemPk no pacote entities.pk sempre que eu precisar de uma classe auxiliar e acompanhar la os passos
+	//e depois fazer a classe do diagrama OrdemItem
 	
 	
 	//fala pro jpa qual é a chave primaria colocar em cima do atributo
