@@ -6,6 +6,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gillianocampos.curso.entities.pk.OrderItemPk;
 
 //passos
@@ -24,7 +25,20 @@ import com.gillianocampos.curso.entities.pk.OrderItemPk;
 //8 fazer get e set do order e product
 //fazer os mapeamentos @Entity @Table para jpa criar a tabela
 //9 para dizer ao jpa que o id é chave primaria composta colocar o @EmbeddedId
+//rodar e ver no banco de dados
+//commit parte 1 dessa aula
+//10associar order com orderitem entao na classe order colocar atributo uma coeção de itens private Set<orderItem> items = new HashSet<>()
+//11colocar a anotation @OnetoMany um para muitos igual fizemos na clase user que tem varios pedido mapeado pelo client
+//12 seguido do mapeamento (mappedBy = "id.order")pq na classe ordemitem eu tenho o id e o id que tem o pedido
+//13 fazer o get para esse atributo e agora meu pedido conhece os items dele
+//14 instanciar os itens do pedido em testConfig
+//15 salvar no banco mas antes tem que criar repository do OrderItemcopiar e colar userrepository e trocar por OrderItem a palavra User
+//16/ fazer a injeção do repository na classe TestConfig @AutoWired
+//17 rodar o banco e ver se inseriu e depois rodar no postman  localhost:8080/orders/1 vai dar loop eterno pedido chama itme  e itens chama pedido
+//18 usar o @JsonIgnore no metodo getOrder na clase orderItem para cortar pq o getorder fica chamando o pedido associado ao item de pedido ai o pedido chama o item de pedido qe da o loop
 
+
+//continuando private OrdemItemRepository orderItemRepository
 @Entity
 @Table(name = "tb_order_item")
 public class OrderItem implements Serializable {
@@ -32,9 +46,9 @@ public class OrderItem implements Serializable {
 	//serializable
 	private static final long serialVersionUID = 1L;
 
-	//chave primaria id do tipo da classe auxiliar OrderItemPk
+	//chave primaria id do tipo da classe auxiliar OrderItemPk e ela esta como null entao tem que instanciar com new  OrderItemPk();
 	@EmbeddedId
-	private OrderItemPk id;
+	private OrderItemPk id = new OrderItemPk();
 	
 	private Integer quantity;
 	private Double price;
@@ -74,6 +88,7 @@ public class OrderItem implements Serializable {
 
 	//get e set de order 
 	// no get ele retorna o id.getOrder quem pesquisar
+	@JsonIgnore //para cortar o loop eterno pedido chama item e item chama pedido
 	public Order getOrder() {
 		return id.getOrder();
 	}

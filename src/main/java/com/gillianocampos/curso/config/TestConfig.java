@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.gillianocampos.curso.entities.Category;
 import com.gillianocampos.curso.entities.Order;
+import com.gillianocampos.curso.entities.OrderItem;
 import com.gillianocampos.curso.entities.Product;
 import com.gillianocampos.curso.entities.User;
 import com.gillianocampos.curso.entities.enums.OrderStatus;
 import com.gillianocampos.curso.repositories.CategoryRepository;
+import com.gillianocampos.curso.repositories.OrdemItemRepository;
 import com.gillianocampos.curso.repositories.OrderRepository;
 import com.gillianocampos.curso.repositories.ProductRepository;
 import com.gillianocampos.curso.repositories.UserRepository;
@@ -45,8 +47,9 @@ public class TestConfig implements CommandLineRunner {
 	// repository
 	private ProductRepository productRepository;
 
-	
-	
+	//injeção de dependencia do OrderItemRepository para usar pra salvar a instancia de items do pedido la em baixo 
+	@Autowired
+    private OrdemItemRepository orderItemRepository;
 	
 	
 	// run executado quando a aplicação for inciada
@@ -113,6 +116,15 @@ public class TestConfig implements CommandLineRunner {
 		
 		 //salvar as associações que fiz acima basta chamar de novo o repository
 		 productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
+		 
+		 //instanciar item de pedidos primeiro exemplo pedido1, produto1 , quantodsde 2 e preco do produto1
+		 OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice()); 
+		 OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice()); 
+		 OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice()); 
+		 OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
+		 
+		 //salvar os itens do pedido depois de fazer a injeçao do repository la em cima e instanciar os itens de pedido logo acima
+		 orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));
 		 
 		 
 		// agora roda e vai no localhost:8080/h2-console e atualiza pra ver a tabela se
