@@ -11,6 +11,8 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity 
 @Table(name = "tb_payment")
 public class Payment implements Serializable{
@@ -24,6 +26,8 @@ public class Payment implements Serializable{
 	
 	private Instant moment;
 	
+	//para cortar loop eterno pagamento chama pedido e pedido chama pagamento
+	@JsonIgnore
 	//mapeamento 1 para 1 ir na classe order e colocar tbm conforme os passos na
 	@OneToOne
 	@MapsId

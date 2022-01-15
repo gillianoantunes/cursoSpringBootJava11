@@ -83,8 +83,16 @@ import com.gillianocampos.curso.entities.pk.OrderItemPk;
 //o1.setPayment(pay1);
 //agora eu salvo o pedido com pagamento associado e o jpa salva esse pagamento associado
 //orderRepository.save(o1);
-//testar no banco h2 
 //commit
+
+//40 fazer o metodo subtotal que esta no diagrama UML da classe OrdemItem e depois o metodo total que esta na classe Order
+//na classe OrdemItem antes de equals e hashcode colocar o metodo getSubTotal tem que por palavra get para aparecer no resultado json
+//na classe Order fazer o método getTotal( tem que usar palavra get) valor total é a soma dos subtotal dos item de pedido
+//salvar e testar no postman localhost:8080/orders/1 vai dar um erro de loop eterno
+//41 o pedido tem pagamento e o pagamento tem pedido colocar @JsonIgnore na classe Payment no atributo Order para cortar loop eterno
+//salvar e rodar testar no postman localhost:8080/orders/1  e conferir os subtotais e total
+//commit
+
 
 //continuando private OrdemItemRepository orderItemRepository
 @Entity
@@ -156,7 +164,11 @@ public class OrderItem implements Serializable {
 		id.setProduct(product);
 	}
 	
-	
+	//método subtotal que calcula os preço dos itens com quantidade
+	//tenho que por o nome get pq na plataforma java interprise o que vale é o get para aparecer no meu resultado Json
+	public Double getSubTotatl() {
+		return price * quantity;
+	}
 	
 	//hashcode e equals de id pois é chave primaria
 	@Override
