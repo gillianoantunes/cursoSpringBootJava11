@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,14 +32,59 @@ import com.gillianocampos.curso.entities.pk.OrderItemPk;
 //commit parte 1 dessa aula
 //10associar order com orderitem entao na classe order colocar atributo uma coeção de itens private Set<orderItem> items = new HashSet<>()
 //11colocar a anotation @OnetoMany um para muitos igual fizemos na clase user que tem varios pedido mapeado pelo client
-//12 seguido do mapeamento (mappedBy = "id.order")pq na classe ordemitem eu tenho o id e o id que tem o pedido
+//12 seguido do mapeamento (mappedBy = "id.order")pq na classe ordemitem eu tenho o id e .order pq id é do tipo classe auxiliar ordemitempk que tem atributo order
 //13 fazer o get para esse atributo e agora meu pedido conhece os items dele
 //14 instanciar os itens do pedido em testConfig
 //15 salvar no banco mas antes tem que criar repository do OrderItemcopiar e colar userrepository e trocar por OrderItem a palavra User
 //16/ fazer a injeção do repository na classe TestConfig @AutoWired
 //17 rodar o banco e ver se inseriu e depois rodar no postman  localhost:8080/orders/1 vai dar loop eterno pedido chama itme  e itens chama pedido
 //18 usar o @JsonIgnore no metodo getOrder na clase orderItem para cortar pq o getorder fica chamando o pedido associado ao item de pedido ai o pedido chama o item de pedido qe da o loop
-
+//chama postman de novo localhost:8080/orders/1 e ele puxa todos pedidos e items certinhos
+//19 commit
+//associação do produto com ordemitem
+//para pesquisar o produto vai ter que associar tbm com ordemitem passando por order
+//da mesma forma que na classe ordem tem uma coleção de item que fiz farei tbm na classe product para percorrer
+//20na classe product colocar colecão private Set<OrderItem> items = new HashSet<>(); uso Set e nao list para informar ao jpa que nao vou admitir repetiçoes do mesmo item.
+//usei new instanciando para não ficar null
+//21 fazer o mapeamento anotation no banco de dados igual fiz na classe order fica assim
+//@OneToMany(mappedBy = id.product")  é id.product pq productitem tem atributo id e esse atributo id do tipoorderitempk tem product
+//22 fazer o get para percorrer uma lista de order
+//entao classe product fazer o get deste atributo items antes de hascode e equals
+//23 na classe orderitem eu vou por um @JsonIgnore no meu getProductspara não acontecer aquele problema do loop eterno
+//24 ir no postman localhost:8080/products/3 e verificar que pegou todos orders associados ao produto 3
+//so que eu nao quero ao buscar produto apareça os pedidos e sim quando buscar pedidos apareça os itens do pedido e para cada item um produtos
+//para inverter  retire o @jsonIgnote do getproduct na classe OrdemItem e na classe product coloque o @Json Ignore em getOrders
+//25 no postman localhost:8080/products/3 agora so aparece os dados do produto
+//26 no postman localhost:8080/orders/1 ai sim aparece o pedido o cliente, os itens de pedido e para cada item um produto associado a ele
+//27 commit
+//28 entidade pagamento associação onetoone associado ao pedido order
+//um pagamento tem um pedido e 1 pedido tem zero ou 1 pagamento
+//29 fazer classe payment com os atributos id tipo long e moment tipo instant
+//30 fazer associação na classe payment private Order order; um pagemnto tem 1 pedido
+//30 na classe order colocar tbm 1 pedido tem um pagamento private Payment payment e fazer gets e sets
+//31 fazer os contrutores vazio e com argumentos agora na classe payment
+//32 fazer gets e sets
+//33  equals e hascode do id
+//34 serializable
+//35 fazer os mapeamoentos do jpa @Entity e @Table(name = "tb_payment") na classe payment
+//36 mapeamento na chave primaria @Id
+// @GeneratedValue(strategy = GenerationType.IDENTITY) em cima do id
+//37 associação quem é a classe dependente é o pagemento pois o pedido pode ter zero pagamento
+// o pedido pode entrar no banco de dados sem ter pagamento pra ele independente
+// na classe dependente no caso payment ir no atributo de associção no caso private Order order e colocar o mapemaneot assim:
+//@OnetoOne e tbm o @MapsId na classe dependente
+//38 na classe independente do outro lado no caso order colocar no atributo de asssocição no caso priavte Payment payment
+// o nome entre aspas é o nome atributo do outro lado da associação que é a classe Payment no caso é order OnetoOne(mappedBy = "order", cascade = CascadeType.All
+//cascade tipo all significa que no caso 1 para 1 as duas entidades tera mesmo id..ex: se o pedido for codigo 5 o pagamento sera codigo 5 tbm. mapenando para ter mesmo id é obrigato usar cascade
+//39 ir na classe Testconfig e inserir um pagamento 2 horas depois do pedido o1 que foi 19:53
+//no pedido que ja foi pago vou acrescentar Payment pi1 = new Payment(null,Instant.parse("2019-06-20T21:53:07z"),o1);
+// //para voce salvar um objeto dependente no caso pagamento é dependente de order numa relação 1 para 1 voce nao vai chamar o repository do proprio objeto payment nao
+//vou chamar meu pedido o1.setPayment(pay1) associando assim meu pedido o1 com pagamento pay1 
+//o1.setPayment(pay1);
+//agora eu salvo o pedido com pagamento associado e o jpa salva esse pagamento associado
+//orderRepository.save(o1);
+//testar no banco h2 
+//commit
 
 //continuando private OrdemItemRepository orderItemRepository
 @Entity
@@ -99,6 +147,7 @@ public class OrderItem implements Serializable {
 	}
 	
 	//get e set de product
+	//retirei o @JsonIgnore //para não dar loop eterno quando chamar getOrder na classe product
 	public Product getProduct() {
 		return id.getProduct();
 	}

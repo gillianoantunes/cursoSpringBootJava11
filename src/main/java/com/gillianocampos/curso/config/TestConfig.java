@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.gillianocampos.curso.entities.Category;
 import com.gillianocampos.curso.entities.Order;
 import com.gillianocampos.curso.entities.OrderItem;
+import com.gillianocampos.curso.entities.Payment;
 import com.gillianocampos.curso.entities.Product;
 import com.gillianocampos.curso.entities.User;
 import com.gillianocampos.curso.entities.enums.OrderStatus;
@@ -125,6 +126,14 @@ public class TestConfig implements CommandLineRunner {
 		 
 		 //salvar os itens do pedido depois de fazer a injeçao do repository la em cima e instanciar os itens de pedido logo acima
 		 orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));
+		 
+		 //adicionando um pagamento do pedido o1 2 horas depois do pedido que foi 19:53
+		 Payment pay1 = new Payment(null,Instant.parse("2019-06-20T21:53:07z"),o1);
+		 //para voce salvar um objeto dependente no caso pagamento é dependente de order numa relação 1 para 1 voce nao vai chamar o repository do proprio objeto payment nao
+		 //vou chamar meu pedido o1.setPayment(pay1) associando assim meu pedido o1 com pagamento pay1 
+		 o1.setPayment(pay1);
+		 //agora eu salvo o pedido com pagamento associado e o jpa salva esse pagamento associado
+		 orderRepository.save(o1);
 		 
 		 
 		// agora roda e vai no localhost:8080/h2-console e atualiza pra ver a tabela se

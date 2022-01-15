@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 //mapeamento1
 @Entity
@@ -46,6 +49,11 @@ public class Product implements Serializable{
 	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), 
 	inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
+	
+	
+	//associação product com coleçao de itens de pedido
+	@OneToMany(mappedBy = "id.product")
+	private Set<OrderItem> items = new HashSet<>(); 
 	
 	//construtor vazio
 	public Product() {
@@ -109,7 +117,27 @@ public class Product implements Serializable{
 		return categories;
 	}
 
-
+    
+	//metodo get para pegar o produto e ver os pedidos associados a ele
+	//dei o nome de getOrders pq orders é o nome que esta no diagrama uml
+	@JsonIgnore //coloquei para quando eu pesquisar produtos não aparecer os pedidos e items, aparecer somente o produto
+	public Set<Order> getOrders(){
+		//declarar uma coleção chamada set para guardar
+		Set<Order> set = new HashSet<>();
+		//percorrer cada objetos do tipo ordemitem e para cada orderitem pegar order associado a ele
+		//para cada objeto OrdemItem vou chamar de x contido na minha lista ou coleçao de items, percorrendo todos ordemitems com apelido x
+		for(OrderItem x : items) {
+			//vou adicionar cada objeto encontrado no set  
+			set.add(x.getOrder());
+		}
+		//retorna toda minha coleção de resultado chamado set
+		return set;
+	}
+	
+	
+	
+	
+	
 	//apaguei o setCategories pq é coleção
 	
 	
