@@ -18,7 +18,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gillianocampos.curso.entities.enums.OrderStatus;
-import com.gillianocampos.curso.repositories.OrdemItemRepository;
 
 //colocar em cima do id os anotations @ do jpa para dizer que essa classe vai ser uma tabela do banco de dados
 //para a o nome da classe Order não der conflito com a palavra order do sql usar o anotation @Table e dar um nome no caso tb_order

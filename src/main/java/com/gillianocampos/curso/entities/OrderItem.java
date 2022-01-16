@@ -1,16 +1,9 @@
 package com.gillianocampos.curso.entities;
 
 import java.io.Serializable;
-
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.springframework.web.bind.annotation.GetMapping;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gillianocampos.curso.entities.pk.OrderItemPk;
 
@@ -112,8 +105,17 @@ import com.gillianocampos.curso.entities.pk.OrderItemPk;
 //} 
 // no post abaixo  retorna o codigo resposta 200 mas o melhor é voltar o 201 que é especifico do http que vc criou um novo recurso
 //45 entao mudar no User|Resource ao inves de return ResponseEntity.ok mudar para ResponseEntity.created(aqui dentro espera um objeto URI criar antes
-
-
+//agora rodar e ver que ele deu a requisição 201 no postman na aba headers vc vera a chave location com o valor http://localhost:8080/users/3 que é o caminho do recurso uri que fizemos com id inserido
+//se vc pegar este caminho e jogar no postman pra get http://localhost:8080/users/3ele recupera no banco vc ve na aba body da resposta la em baixo no ultima divisa da tela
+//commit
+//46 para ddeletar user mexer no UserService e UserResosurce
+//em UserService fazer o metodo delete passando id como parametro
+//47 no UserResource inserir o endpoint para deletar no padrao rest usamos o @DeleteMapping(value = "/{id}")
+//48 no postman metodo delete caminho http://localhost:8080/users/1 para tentar apagar o usuario de codigo 1
+//vai dar erro 500 de integridade referencia pq tenjo usuario 1 inserindo em outras tabelas de pedidos se nao os pedidos ficariam sem clientes
+//depois vou tratar isso vou inserir um usuario sem pedido e deletar apenas para nao dar esse erro
+//entao inserir no metodo post passando um objeto json igual fizemos pra inserir e inseiru o usuario 3
+//agora deletar esse usuario codigo 3 que nao tem pedidos associados a ele e deletar conforme fizemos http://localhost:8080/users/3 e agora sim ele da o codigo 204 nocontent que signfica que ele apagou o usuario resposta vazia
 
 //continuando private OrdemItemRepository orderItemRepository
 @Entity

@@ -45,5 +45,11 @@ public class UserService {
 		//o save ja retorna o objeto salvo
 		return repository.save(obj);
 	}
+	
+	//metodo para deletar usuario passando id como paramentro
+	public void delete(Long id) {
+		//deleta no banco
+		repository.deleteById(id);
+	}
 	//la no UserResources tem que atualizar a implementação do findAll
 }
