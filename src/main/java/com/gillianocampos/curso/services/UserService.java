@@ -39,5 +39,11 @@ public class UserService {
 		//retorna obj.get a operacao get do optional retorna um obj do tipo user que estiver dentro do meu optional
 		return obj.get();
 	}
+
+	//metodo para inserir um usuario
+	public User insert(User obj) {
+		//o save ja retorna o objeto salvo
+		return repository.save(obj);
+	}
 	//la no UserResources tem que atualizar a implementação do findAll
 }

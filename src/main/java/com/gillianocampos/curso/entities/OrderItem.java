@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.web.bind.annotation.GetMapping;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gillianocampos.curso.entities.pk.OrderItemPk;
 
@@ -92,6 +94,25 @@ import com.gillianocampos.curso.entities.pk.OrderItemPk;
 //41 o pedido tem pagamento e o pagamento tem pedido colocar @JsonIgnore na classe Payment no atributo Order para cortar loop eterno
 //salvar e rodar testar no postman localhost:8080/orders/1  e conferir os subtotais e total
 //commit
+
+//42 fazer inserção de usuarios , trabalhar no UserService e UserResource, entao no UserService
+//ja temos la findById e findAll agora vamos criar a operação insert para salvar no banco de dados um usuario
+// 43 no UserResource fazer o endpoint para inserir o resource é um controlador rest que tem caminho /"users
+//usamos la a naotation @GetMapping para recuperar dados do banco de dados. para inserir usamos o @PostMapping que é um metodo do http
+//fazendo o metodo para chamar o insert no UserService
+//44 agora vamos enviar um objeto json representando os campos do usuario nome,email,phone e password
+//no postman chamar o metodo post agora e nao get trocar e localhost:8080/orders/ e copia o objeto completo do material inserindo la no postman assim:
+//inserir no post esse objeto json abaixo na aba Body sub aba raw e colocar tbm na aba final trocar text para json para comunicar ao backend que estou enviando os dados neste formato no postman
+//na aba Headers na linha key digitar ContentType e value application/json e verificar se inseriu 
+//{ 
+//"name": "Bob Brown", 
+//"email": "bob@gmail.com", 
+//"phone": "977557755", 
+//"password": "123456" 
+//} 
+// no post abaixo  retorna o codigo resposta 200 mas o melhor é voltar o 201 que é especifico do http que vc criou um novo recurso
+//45 entao mudar no User|Resource ao inves de return ResponseEntity.ok mudar para ResponseEntity.created(aqui dentro espera um objeto URI criar antes
+
 
 
 //continuando private OrdemItemRepository orderItemRepository
