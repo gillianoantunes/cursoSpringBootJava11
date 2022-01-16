@@ -127,9 +127,11 @@ import com.gillianocampos.curso.entities.pk.OrderItemPk;
 //"email": "bob@gmail.com", 
 //"phone": "977557755" 
 //} 
-//51 no post trocar para metodo put e chamar  http://localhost:8080/users/1 e na aba body colocar json acima
+//51 no postman trocar para metodo put e chamar  http://localhost:8080/users/1 e na aba body colocar json acima
 //rodou e verificar no postmam
 //commit
+//resumindo no postman get para buscar no banco, post para gravar, put para atualizar
+//52 acompanhar tratamento de exceções na classe ResourceNotFoundException no pacote services.exception
 
 //continuando private OrdemItemRepository orderItemRepository
 @Entity

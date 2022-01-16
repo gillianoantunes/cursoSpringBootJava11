@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.gillianocampos.curso.entities.User;
 import com.gillianocampos.curso.repositories.UserRepository;
+import com.gillianocampos.curso.services.exceptions.ResourceNotFoundException;
 
 //vou implementar operação para buscar todos usuarios 
 // tbm operação para buscar usuario por ID
@@ -37,7 +38,8 @@ public class UserService {
 		//o findbyid retornara um objeto optional entao cria variavel obj do tipo optional de User
 		Optional<User> obj = repository.findById(id);
 		//retorna obj.get a operacao get do optional retorna um obj do tipo user que estiver dentro do meu optional
-		return obj.get();
+		//troquei return obj.get(); por esse obj.orElseThrow ele tenta dar o get se não tiver usuario ele lança a exeção a execeção entre parentese lambida e depois a nossa exceção personalizada ResourceNotFoundException passando id como paraemtro
+		return obj.orElseThrow(()-> new ResourceNotFoundException(id));
 	}
 
 	//metodo para inserir um usuario
