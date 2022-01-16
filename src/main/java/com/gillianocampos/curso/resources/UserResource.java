@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -92,6 +93,16 @@ public class UserResource {
 		// retornar a resposta noContent pq é uma resposta vazia e o codigo http de uma
 		// resposta vazia é o 204 e no final chamar o .build
 		return ResponseEntity.noContent().build();
+	}
+	
+	//atualizar um user passando o id que sera atualizado e o obj com dados a ser atualiazdo
+	//@PutMapping(value = "/{id}") vai ter o id e tbm o objeto obj que virar os dados atualizados
+	//assina o metodo 
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<User> update(@PathVariable Long id,@RequestBody User obj ) {
+		//sar a propria variavel obj para receber o service.update passando o id e o obj
+		obj = service.update(id, obj);
+		return ResponseEntity.ok().body(obj);
 	}
 
 }

@@ -51,5 +51,26 @@ public class UserService {
 		//deleta no banco
 		repository.deleteById(id);
 	}
+	
+	//função para atualizar usuario cahamada updade que recebe id para indicar qual usuario irei atualizar e obj user contendo os dados para ser atualizado
+	public User update(Long id, User obj) {
+		//getOne ele instancia o usuario e não vai no banco aoenas deixr o objeto monitorado para trabalhar com ele
+		//é melhor que findById que vai no banco
+		User entity = repository.getOne(id);
+		//para atualizar os dados do objeti entity e atualizar com os dados que veio do obj no parametro criei um metodo updateData
+		updateData(entity,obj);
+		//salvar no banco o entity
+		return  repository.save(entity);
+	}
+
+	//metodo criado que atualiza os dados do entity com base no que chegou no parametro obj
+	private void updateData(User entity, User obj) {
+		// atualizar os dados do entity nao atualizo id nem senha
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		entity.setPhone(obj.getPhone());
+		
+	}
+	
 	//la no UserResources tem que atualizar a implementação do findAll
 }

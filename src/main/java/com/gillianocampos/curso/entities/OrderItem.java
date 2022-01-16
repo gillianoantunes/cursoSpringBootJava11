@@ -117,6 +117,20 @@ import com.gillianocampos.curso.entities.pk.OrderItemPk;
 //entao inserir no metodo post passando um objeto json igual fizemos pra inserir e inseiru o usuario 3
 //agora deletar esse usuario codigo 3 que nao tem pedidos associados a ele e deletar conforme fizemos http://localhost:8080/users/3 e agora sim ele da o codigo 204 nocontent que signfica que ele apagou o usuario resposta vazia
 
+//49 fazer atualização do User trbalhar no UserService e UserResource
+//no UserService criaa função para atualizar usuario cahamada updade que recebe id para indicar qual usuario irei atualizar e obj user contendo os dados para ser atualizado
+//50 no UserResource fazer metodo para atualizar o usuario
+//no padrao rest para atualizar um recurso usamos o metodo http @PutMapping(value = "/{id}") colocando o id indicando o id que sera atualizado
+//no postman trocar para o metodo put e atualizar i usuario 1 ver o objeto jason no usuario copia e colar no postam 
+//{ 
+//"name": "Bob Brown", 
+//"email": "bob@gmail.com", 
+//"phone": "977557755" 
+//} 
+//51 no post trocar para metodo put e chamar  http://localhost:8080/users/1 e na aba body colocar json acima
+//rodou e verificar no postmam
+//commit
+
 //continuando private OrdemItemRepository orderItemRepository
 @Entity
 @Table(name = "tb_order_item")
