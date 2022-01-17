@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.gillianocampos.curso.services.exceptions.DatabaseException;
 import com.gillianocampos.curso.services.exceptions.ResourceNotFoundException;
 
 @ControllerAdvice // traz todas exceções para ser executado aqui nesta classe
@@ -24,6 +25,20 @@ public class ResourceExceptionHandler {
 		String error = "Resource não encontrado";
 		// colocar o status de erro que é o 404 not found
 		HttpStatus status = HttpStatus.NOT_FOUND;
+		//instanciar um objeto do tipo StandardError que é classe que criamos para personalizar os erros do http
+		//passando os parametros instante atual, status que fiz acima .value para passar pra inteiro, error é a msg que criei acima, a mensagem é a que veio no paramentro que recebi no caso e.getmessage() e o caminho é o do parametro request.getrequestURI
+		StandardError err = new StandardError(Instant.now(),status.value(), error, e.getMessage(),request.getRequestURI());
+		//retorna um responseEntity .status para retronar com codigo personalizado e o .body com corpo da resposta o err
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	//copiei o metodo acima e colei mudando agora para a outra execção que lancei chamada DatabaseException que trata violação de integridade quando deletar
+	@ExceptionHandler(DatabaseException.class)
+	public ResponseEntity<StandardError> database(DatabaseException e,HttpServletRequest request) {
+		// mensagem básica de erro para o usuário
+		String error = "Database erro";
+		// colocar o status de erro de violaçao de integridade chamado BadRequest
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 		//instanciar um objeto do tipo StandardError que é classe que criamos para personalizar os erros do http
 		//passando os parametros instante atual, status que fiz acima .value para passar pra inteiro, error é a msg que criei acima, a mensagem é a que veio no paramentro que recebi no caso e.getmessage() e o caminho é o do parametro request.getrequestURI
 		StandardError err = new StandardError(Instant.now(),status.value(), error, e.getMessage(),request.getRequestURI());

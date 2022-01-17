@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.gillianocampos.curso.entities.User;
 import com.gillianocampos.curso.repositories.UserRepository;
+import com.gillianocampos.curso.services.exceptions.DatabaseException;
 import com.gillianocampos.curso.services.exceptions.ResourceNotFoundException;
 
 //vou implementar operação para buscar todos usuarios 
@@ -50,8 +53,25 @@ public class UserService {
 	
 	//metodo para deletar usuario passando id como paramentro
 	public void delete(Long id) {
+		//exceção
+		try {
 		//deleta no banco
 		repository.deleteById(id);
+		}
+		//catch(RuntimeException e) { troquei por
+		catch(EmptyResultDataAccessException e) {
+			//e.printstackTrace mostra na tela o tipo da exceção lançada
+			//troquei e.printStackTrace(); para lançar
+			//agora quando der o erro EmptyResultDataAccessException eu vou lançar a execeção ResourceNotFoundExceção que trata erro 404
+			throw new ResourceNotFoundException(id);
+			//para capturar qualquer outra exeção que ocorrer no delete como por exemplo a violação de integridade colocar catch(run... abaixo
+		}
+		//trocar catch(RuntimeException e){ por DataIntegrityViolationException pois runtime é generico demais
+		catch(DataIntegrityViolationException e) {
+			//agora vamos lanar outra execção personalizada de violação de integridade que vamos criar no pacote serveces.exceptions chamada DatabaseException e lançar ela aqui abaixo
+			//trocar e.printStackTrace(); pela execeção que criei DatabaseException que trata erro de violação passando a mensagem e.getmessage que veio no parametro da exceção
+			   throw new DatabaseException(e.getMessage());
+		}
 	}
 	
 	//função para atualizar usuario cahamada updade que recebe id para indicar qual usuario irei atualizar e obj user contendo os dados para ser atualizado
