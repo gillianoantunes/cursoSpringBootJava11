@@ -3,6 +3,8 @@ package com.gillianocampos.curso.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -51,6 +53,8 @@ public class UserService {
 		return repository.save(obj);
 	}
 	
+	
+	
 	//metodo para deletar usuario passando id como paramentro
 	public void delete(Long id) {
 		//exceção
@@ -74,17 +78,27 @@ public class UserService {
 		}
 	}
 	
-	//função para atualizar usuario cahamada updade que recebe id para indicar qual usuario irei atualizar e obj user contendo os dados para ser atualizado
+	//função para atualizar usuario chamada updade que recebe id para indicar qual usuario irei atualizar e obj user contendo os dados para ser atualizado
 	public User update(Long id, User obj) {
-		//getOne ele instancia o usuario e não vai no banco aoenas deixr o objeto monitorado para trabalhar com ele
-		//é melhor que findById que vai no banco
-		User entity = repository.getOne(id);
-		//para atualizar os dados do objeti entity e atualizar com os dados que veio do obj no parametro criei um metodo updateData
-		updateData(entity,obj);
-		//salvar no banco o entity
-		return  repository.save(entity);
+		//tratando exceção se caso tentar alterar um ususario que nao existe
+		try {
+			//getOne ele instancia o usuario e não vai no banco aoenas deixr o objeto monitorado para trabalhar com ele
+			//é melhor que findById que vai no banco
+			User entity = repository.getOne(id);
+			//para atualizar os dados do objeti entity e atualizar com os dados que veio do obj no parametro criei um metodo updateData
+			updateData(entity,obj);
+			//salvar no banco o entity
+			return  repository.save(entity);
+		}
+		//trocar pela exceçao especifica que deu ao rodar esse catch(RuntimeException e) { por EntityNotFoundException
+			catch(EntityNotFoundException e) {
+				//tiro este pois ja vi o erro e.printStackTrace();
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
+	
+	
 	//metodo criado que atualiza os dados do entity com base no que chegou no parametro obj
 	private void updateData(User entity, User obj) {
 		// atualizar os dados do entity nao atualizo id nem senha

@@ -41,8 +41,21 @@ package com.gillianocampos.curso.services.exceptions;
 //71 salvar e rodar  e ver se deu uma exceçao personalizada ir no post e tentar apagar o usuario 1 que tem pedidos associados no postman delete localhost:8080/users/1
 //agora sim da erro 400  BadRequest
 //commit
-
-
+//72 exceção para alterar updade put o erro mais comum ex:mandar atualizar um usuario codigo 7 que não existe dara um erro
+//postman put localhost:8080/users/7 ususario 7 nao existe dara erro 500 passando os dados para atualizar abaixo
+//{ 
+//"name": "Bob Brown", 
+//"email": "bob@gmail.com", 
+//"phone": "977557755" 
+//} 
+//para trocar erro 500 para erro personalizado por exemplo um notfound igual fizemos
+//73 na classe userservice no metodo update colocar try{User...return...}catch(RunTimeException e){ e.printStackTrace(); para ver o erro coloquei por enquanto a execção mais generica runtimeexception so para ver o erro
+//roda e limpa o console para ver o erro que é o EntityNotFoundException mas no postman da o erro 404 mas execeção generica vamos por a especificar que é EntityNotFoundException
+// trocar o catch(runTimeException) que é uma execeçao generica pela execeção que deu no console que é  a EntityNotFoundException
+//ficara catch(EntityNotFoundException e){ 
+//apagar o e.printStackTrace() pois já vi o erro no console salvar e rodar
+//ir no postman fazer o put localhost:8080/users/7 e agora sim deu erro 404 com a mensagem personalizada
+//commit
 
 
 //classe para lançar exceção de erro 404 que é quando id não é encontrado
